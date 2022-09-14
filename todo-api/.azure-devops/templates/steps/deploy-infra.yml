@@ -1,0 +1,37 @@
+parameters:
+- name: displayName
+  type: string
+  default: 'Override Parameters and Deploy Infra'
+- name: cmsFilePath
+  type: string
+- name: webAppName
+  type: string
+- name: serviceConnection
+  type: string
+- name: resourceGroupName
+  type: string
+- name: sqlServerName
+  type: string
+- name: adminLogin
+  type: string
+- name: sqlDatabaseName
+  type: string
+
+steps:
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: Resource Group
+    action: Create Or Update Resource Group
+    location: 'South Africa North'
+    azureResourceManagerConnection: ${{ parameters.serviceConnection }}
+    resourceGroupName: ${{ parameters.resourceGroupName }}
+    csmFile: ${{ parameters.cmsFilePath }}
+    deploymentMode: Incremental
+    templateLocation: Linked artifact
+    overrideParameters: >-
+      -webAppName ${{ parameters.webAppName }}
+      -sqlServerName ${{ parameters.sqlServerName }}
+      -sqlDatabaseName ${{ parameters.sqlDatabaseName }}
+      -adminLogin ${{ parameters.adminLogin }}
+      -adminPass $(adminPass)
+  displayName: ${{ parameters.displayName }}

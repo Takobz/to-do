@@ -1,0 +1,13 @@
+variables:
+- name: resourceGroupName
+  value: to-do-application
+- name: serviceConnection
+  value: to-do-app-service-connection
+- name: sqlServerName
+  value: khutso-todo-sql-server
+- name: adminLogin
+  value: sql-admin-login
+- name: webAppName
+  value: khutso-todo-web-app
+- name: sqlDatabaseName
+  value: khutso-todo-database

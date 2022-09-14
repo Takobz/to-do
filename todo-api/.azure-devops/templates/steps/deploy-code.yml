@@ -1,0 +1,17 @@
+parameters:
+- name: serviceConnection
+  type: string
+- name: webAppName
+  type: string
+- name: resourceGroupName
+  type: string
+
+steps:
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: ${{ parameters.serviceConnection }}
+    appType: 'webAppLinux'
+    WebAppName: ${{ parameters.webAppName }}
+    ResourceGroupName: ${{ parameters.resourceGroupName }}
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'

@@ -1,0 +1,49 @@
+trigger:
+- master
+- development
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+- template: ./variables/variables.yml
+
+stages:
+- stage: BuildAndPublish
+  displayName: BuildAndPublish
+  jobs:
+  - job: DeployInfra
+    steps:
+    - template: templates/steps/transpile-infra.yml
+      parameters:
+        displayName: 'Transpile Bicep to ARM'
+
+    - template: templates/steps/deploy-infra.yml
+      parameters:
+        displayName: 'Override Parameters and Deploy Infra'
+        cmsFilePath: 'infra/main.json'
+        webAppName: ${{ variables.webAppName }}
+        serviceConnection: ${{ variables.serviceConnection }}
+        resourceGroupName: ${{ variables.resourceGroupName }}
+        sqlServerName: ${{ variables.sqlServerName }}
+        sqlDatabaseName: ${{ variables.sqlDatabaseName }}
+        adminLogin: ${{ variables.adminLogin }}
+
+  - job: BuildAndPublish
+    dependsOn: DeployInfra
+    steps:
+    - template: templates/steps/build-and-publish.yml@Self
+
+- stage: DeployWebApp
+  dependsOn: BuildAndPublish
+  displayName: Deploy Web API Code
+  jobs:
+  - job: DownloadPackageAndDeploy
+    steps:
+      - template: templates/steps/publish-to-artifact.yml@Self
+      
+      - template: templates/steps/deploy-code.yml@Self
+        parameters:
+          serviceConnection: ${{ variables.serviceConnection }}
+          webAppName: ${{ variables.webAppName }}
+          resourceGroupName: ${{ variables.resourceGroupName }}

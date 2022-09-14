@@ -1,0 +1,8 @@
+parameters:
+  - name: displayName
+    type: string
+    default: 'Transpile Bicep to ARM'
+
+steps:
+- bash: az bicep build --file "infra/main.bicep" --outfile "infra/main.json"
+  displayName: ${{ parameters.displayName }}

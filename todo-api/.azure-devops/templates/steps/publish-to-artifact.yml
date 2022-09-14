@@ -1,0 +1,6 @@
+steps:
+- task: DownloadPipelineArtifact@2
+  inputs:
+    source: 'current'
+    artifactName: 'publishPackage'
+    path: $(System.DefaultWorkingDirectory)/publish
