@@ -21,7 +21,7 @@ const TodoItem = (props) => {
       </Editable>
       <Spacer />
       <TodoOptions gap='2'
-        todoIndex={props.todoIndex}
+        todoIndex={props.todo.id}
         isTodoComplete={props.todo.isComplete}
         onCompleteTodo={props.onCompleteTodo}
         onDeleteTodo={props.onDeleteTodo}

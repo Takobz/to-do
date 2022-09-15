@@ -1,53 +1,66 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import NewTodoForm from "./Components/NewTodo/TodoForm";
 import { VStack, Heading } from "@chakra-ui/react";
 import TodoList from "./Components/Todos/TodoList";
 import TodoListFilterIndicator from "./Components/Todos/TodoListFilterIndicator";
+import {
+  getAllToDoItems,
+  addToDoItem,
+  setToDoToComplete,
+  deletToDoToComplete,
+  setAllToDoItemsToComplete,
+  setAllToDoItemsToActive
+} from "./Services/ToDoService";
 
 function App() {
   const [todos, setTodos] = useState([]);
   const [filterValue, setFilterValue] = useState("all");
 
+  //get all todos from db when we 1st load app.
+  useEffect(() => {
+    getAllToDoItems().then((items) => {
+      setTodos(items);
+    });
+  }, []);
+
   const handleTodoAdd = (description) => {
-    setTodos((prevTodos) => {
-      return [...prevTodos, { description: description, isComplete: false }];
+    addToDoItem(description).then(() => {
+      getAllToDoItems().then((items) => {
+        setTodos(items);
+      });
     });
   };
 
-  const handleMakeTodoComplete = (index) => {
-    setTodos((prevTodos) => {
-      let newTodos = [...prevTodos];
-      newTodos[index].isComplete = true;
-      return newTodos;
+  const handleMakeTodoComplete = (id) => {
+    setToDoToComplete(id).then(() => {
+      getAllToDoItems().then((items) => {
+        setTodos(items);
+      });
     });
   };
 
-  const handleDeleteTodo = (index) => {
-    setTodos((prevTodos) => {
-      let newTodos = [...prevTodos];
-      newTodos.splice(index, 1);
-      return newTodos;
+  const handleDeleteTodo = (id) => {
+    deletToDoToComplete(id).then(() => {
+      getAllToDoItems().then((items) => {
+        setTodos(items);
+      });
     });
   };
 
   const handleMarkAllCheck = (event) => {
     if (event.target.checked) {
-      setTodos((prevTodos) => {
-        let newTodos = prevTodos.map((todo) => {
-          todo.isComplete = true;
-          return todo;
+      setAllToDoItemsToComplete().then(() => {
+        getAllToDoItems().then((items) => {
+          setTodos(items);
         });
-        return newTodos;
       });
     }
     if (!event.target.checked) {
-      setTodos((prevTodos) => {
-        let newTodos = prevTodos.map((todo) => {
-          todo.isComplete = false;
-          return todo;
+      setAllToDoItemsToActive().then(() => {
+        getAllToDoItems().then((items) => {
+          setTodos(items);
         });
-        return newTodos;
       });
     }
   };

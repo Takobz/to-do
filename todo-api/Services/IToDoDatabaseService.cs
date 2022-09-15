@@ -14,8 +14,12 @@ namespace ToDoApp.Services
 
         public List<ToDoItem> GetAllToDoItems();
 
-        public List<ToDoItem> GetAllActiveToDoItems();
-
         public List<ToDoItem> GetAllCompleteToDoItems();
+
+        List<Models.ToDoItem> GetAllActiveToDoItems();
+
+        void SetAllToDoItemsToComplete();
+
+        void SetAllToDoItemsToActive();
     }
 }

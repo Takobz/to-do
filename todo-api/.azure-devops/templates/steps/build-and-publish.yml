@@ -2,13 +2,13 @@ steps:
 - task: DotNetCoreCLI@1
   inputs:
     command: build
-    projects: $(System.DefaultWorkingDirectory)/*.csproj
+    projects: $(System.DefaultWorkingDirectory)/todo-api/*.csproj
   displayName: Build
 
 - task: DotNetCoreCLI@1
   inputs:
     command: publish
-    projects: $(System.DefaultWorkingDirectory)/*.csproj
+    projects: $(System.DefaultWorkingDirectory)/todo-api/*.csproj
     arguments: --configuration release --output $(Pipeline.Workspace)/publish
     zipAfterPublish: true
     publishWebProjects: false

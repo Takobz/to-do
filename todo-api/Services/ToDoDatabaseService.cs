@@ -16,14 +16,14 @@ namespace ToDoApp.Services
 
         public void CreateToDoItem(string description)
         {
-            if(string.IsNullOrEmpty(description))
+            if (string.IsNullOrEmpty(description))
             {
                 throw new ArgumentNullException("description needed to create item");
             }
 
             var todoItem = new Models.DatabaseModels.ToDoItem
             {
-                IsComplete = 0,
+                IsComplete = false,
                 Description = description
             };
 
@@ -44,9 +44,9 @@ namespace ToDoApp.Services
 
         public List<Models.ToDoItem> GetAllActiveToDoItems()
         {
-            var dbToDoItems =_toDoAppContext.ToDoItem
+            var dbToDoItems = _toDoAppContext.ToDoItem
                 .Select(x => x)
-                .Where(x => x.IsComplete == 1)
+                .Where(x => x.IsComplete == false)
                 .ToList();
 
             return _mapper.Map<List<Models.DatabaseModels.ToDoItem>, List<Models.ToDoItem>>(dbToDoItems);
@@ -56,7 +56,7 @@ namespace ToDoApp.Services
         {
             var dbToDoItems = _toDoAppContext.ToDoItem
                 .Select(x => x)
-                .Where(x => x.IsComplete == 1)
+                .Where(x => x.IsComplete == true)
                 .ToList();
 
             return _mapper.Map<List<Models.DatabaseModels.ToDoItem>, List<Models.ToDoItem>>(dbToDoItems);
@@ -71,17 +71,37 @@ namespace ToDoApp.Services
             return _mapper.Map<List<Models.DatabaseModels.ToDoItem>, List<Models.ToDoItem>>(dbToDoItems);
         }
 
+        public void SetAllToDoItemsToComplete()
+        {
+            _toDoAppContext.ToDoItem
+           .Select(x => x)
+           .ToList()
+           .ForEach(item => item.IsComplete = true);
+
+            _toDoAppContext.SaveChangesToDatabase();
+        }
+
+        public void SetAllToDoItemsToActive()
+        {
+            _toDoAppContext.ToDoItem
+            .Select(x => x)
+            .ToList()
+            .ForEach(item => item.IsComplete = false);
+
+            _toDoAppContext.SaveChangesToDatabase();
+        }
+
         public void SetToDoItemToActive(int id)
         {
             try
             {
-                var toDoItem = _toDoAppContext.ToDoItem
+                _toDoAppContext.ToDoItem
                 .First(x => x.ID == id)
-                .IsComplete = 0;
+                .IsComplete = false;
 
                 _toDoAppContext.SaveChangesToDatabase();
             }
-            catch(Exception)
+            catch (Exception)
             {
                 throw;
             }
@@ -93,11 +113,27 @@ namespace ToDoApp.Services
             {
                 var toDoItem = _toDoAppContext.ToDoItem
                 .First(x => x.ID == id)
-                .IsComplete = 1;
+                .IsComplete = true;
 
                 _toDoAppContext.SaveChangesToDatabase();
             }
-            catch(Exception)
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public void SetToDoItemToInComplete(int id)
+        {
+            try
+            {
+                var toDoItem = _toDoAppContext.ToDoItem
+                .First(x => x.ID == id)
+                .IsComplete = false;
+
+                _toDoAppContext.SaveChangesToDatabase();
+            }
+            catch (Exception)
             {
                 throw;
             }

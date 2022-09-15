@@ -28,6 +28,13 @@ namespace ToDoApp.Controllers
             return _toDoDatabaseService.GetAllActiveToDoItems();
         }
 
+        [HttpGet]
+        [Route("to-do-items/all-complete")]
+        public IEnumerable<ToDoItem> GetAllCompleteToDoItems()
+        {
+            return _toDoDatabaseService.GetAllCompleteToDoItems();
+        }
+
         [HttpPost]
         [Route("to-do-items/create")]
         public IActionResult CreateToDoItem(string description)
@@ -40,7 +47,82 @@ namespace ToDoApp.Controllers
             {
                 return BadRequest(ex);
             }
-            return Ok($"Item created");
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("to-do-items/set-to-complete")]
+        public IActionResult SetToDoItemToComplete(int id)
+        {
+            try
+            {
+                _toDoDatabaseService.SetToDoItemToComplete(id);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("to-do-items/set-to-active")]
+        public IActionResult SetToDoItemToIncomplete(int id)
+        {
+            try
+            {
+                _toDoDatabaseService.SetToDoItemToActive(id);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("to-do-items/set-all-to-complete")]
+        public IActionResult SetAllToToDoItemsToComplete()
+        {
+            try
+            {
+                _toDoDatabaseService.SetAllToDoItemsToComplete();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("to-do-items/set-all-to-active")]
+        public IActionResult SetAllToToDoItemsToActive()
+        {
+            try
+            {
+                _toDoDatabaseService.SetAllToDoItemsToActive();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("to-do-items/delete-item")]
+        public IActionResult DeleteToDoItem(int id)
+        {
+            try
+            {
+                _toDoDatabaseService.DeleteToDoItem(id);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+            return Ok();
         }
     }
 }

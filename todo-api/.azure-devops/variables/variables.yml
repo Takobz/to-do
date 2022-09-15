@@ -11,3 +11,5 @@ variables:
   value: khutso-todo-web-app
 - name: sqlDatabaseName
   value: khutso-todo-database
+- name: reactWebAppName
+  value: todo-app

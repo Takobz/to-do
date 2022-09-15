@@ -21,7 +21,7 @@ stages:
     - template: templates/steps/deploy-infra.yml
       parameters:
         displayName: 'Override Parameters and Deploy Infra'
-        cmsFilePath: 'infra/main.json'
+        cmsFilePath: 'todo-api/infra/main.json'
         webAppName: ${{ variables.webAppName }}
         serviceConnection: ${{ variables.serviceConnection }}
         resourceGroupName: ${{ variables.resourceGroupName }}

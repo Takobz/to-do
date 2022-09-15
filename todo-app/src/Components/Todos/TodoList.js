@@ -17,12 +17,11 @@ const TodoList = (props) => {
     filteredTodos = props.todos.filter((todo) => todo.isComplete);
   }
 
-  console.log(filteredTodos)
-  return filteredTodos.map((todo, index) => (
+  return filteredTodos.map((todo) => (
     <TodoItem
       todo={todo}
-      key={index}
-      todoIndex={index}
+      key={todo.id}
+      todoIndex={todo.id}
       onCompleteTodo={props.onCompleteTodo}
       onDeleteTodo={props.onDeleteTodo}
     />

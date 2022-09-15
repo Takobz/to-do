@@ -4,5 +4,5 @@ parameters:
     default: 'Transpile Bicep to ARM'
 
 steps:
-- bash: az bicep build --file "infra/main.bicep" --outfile "infra/main.json"
+- bash: az bicep build --file "todo-api/infra/main.bicep" --outfile "todo-api/infra/main.json"
   displayName: ${{ parameters.displayName }}

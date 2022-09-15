@@ -4,6 +4,8 @@ param adminLogin string
 param adminPass string
 param sqlServerName string
 param sqlDatabaseName string
+param reactWebAppName string = 'todo-app'
+param swAppLocation string = 'westeurope'
 
 module appService 'modules/appService.bicep' = {
   name: 'appService'
@@ -11,6 +13,14 @@ module appService 'modules/appService.bicep' = {
     webAppName: webAppName
     location: location
     sqlDatabaseName: sqlDatabase.outputs.databaseName
+  }
+}
+
+module staticWebApp 'modules/staticWebApp.bicep' = {
+  name: 'staticWebApp'
+  params: {
+   appName: reactWebAppName
+   location: swAppLocation
   }
 }
 
